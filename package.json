@@ -1,0 +1,13 @@
+{
+  "name": "ai-toolbox-extension",
+  "version": "1.3.2",
+  "private": true,
+  "description": "Edge 扩展：摘要、翻译、润色、校对、回复、JSON 抽取、测验、FAQ、代码解释与报错诊断",
+  "scripts": {
+    "check": "node scripts/validate.mjs",
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package.ps1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

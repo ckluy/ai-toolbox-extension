@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 工具箱</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #dbe3ee;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: #e8f0ff;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --shadow: 0 10px 34px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #0f172a;
+        --panel: #172033;
+        --panel-soft: #111827;
+        --text: #e5edf8;
+        --muted: #94a3b8;
+        --border: #2d3b52;
+        --accent: #60a5fa;
+        --accent-hover: #93c5fd;
+        --accent-soft: #1e3a5f;
+        --success: #86efac;
+        --danger: #fca5a5;
+        --shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Inter, "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 420px;
+      min-height: 580px;
+      padding: 16px;
+      margin: 0 auto;
+      overflow-y: auto;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.12), transparent 34%),
+        var(--bg);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .settings {
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .settings-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .settings-head strong {
+      font-size: 13px;
+    }
+
+    .badge {
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .settings input,
+    .settings select {
+      width: 100%;
+      height: 38px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      background: var(--panel-soft);
+    }
+
+    .settings select {
+      margin-top: 8px;
+    }
+
+    .settings-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .settings-actions a {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .settings-actions a:hover {
+      color: var(--accent);
+    }
+
+    .tip {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      padding: 4px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    .tab {
+      padding: 8px 4px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .tab:hover:not(.active) {
+      color: var(--text);
+      background: var(--panel-soft);
+    }
+
+    .tab.active {
+      color: #ffffff;
+      background: var(--accent);
+      box-shadow: 0 5px 14px rgba(37, 99, 235, 0.24);
+    }
+
+    .tool-description {
+      min-height: 17px;
+      margin: 0 2px 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .target-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel);
+    }
+
+    .target-row label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .target-row select {
+      max-width: 190px;
+      height: 32px;
+      padding: 0 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--panel-soft);
+      font-size: 12px;
+    }
+
+    .card {
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .counter,
+    .meta {
+      color: var(--muted);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .counter.over {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    textarea,
+    .output {
+      display: block;
+      width: 100%;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: var(--panel-soft);
+    }
+
+    textarea {
+      min-height: 116px;
+      max-height: 250px;
+      padding: 10px;
+      resize: vertical;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .output {
+      min-height: 128px;
+      max-height: 220px;
+      padding: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .output.empty {
+      color: var(--muted);
+      font-family: inherit;
+    }
+
+    .inline-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 9px;
+      min-height: 18px;
+    }
+
+    .text-btn {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .text-btn:hover {
+      text-decoration: underline;
+    }
+
+    .text-btn.danger {
+      color: var(--danger);
+    }
+
+    .source-label {
+      min-width: 0;
+      margin-left: auto;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status {
+      min-height: 17px;
+      margin: 3px 2px 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.info {
+      color: var(--accent);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.52;
+    }
+
+    .btn-primary {
+      color: #ffffff;
+      background: var(--accent);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      color: var(--text);
+      background: var(--panel);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-danger {
+      border-color: rgba(185, 28, 28, 0.25);
+      color: var(--danger);
+      background: var(--panel);
+    }
+
+    .btn-small {
+      min-height: 32px;
+      padding: 5px 10px;
+      font-size: 11px;
+    }
+
+    .footer-hint {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="icon48.png" alt="">
+      <div>
+        <h1>AI 工具箱</h1>
+        <p>文本处理 · 内容生成 · 开发辅助</p>
+      </div>
+    </div>
+    <button class="icon-btn" id="settingBtn" type="button" aria-label="打开设置" aria-expanded="false" aria-controls="settingPanel">⚙</button>
+  </header>
+
+  <section class="settings" id="settingPanel" hidden aria-label="API 设置">
+    <div class="settings-head">
+      <strong>通义千问设置</strong>
+      <span class="badge">Key 仅存本机</span>
+    </div>
+    <label class="field-label" for="apiKeyInput">DashScope API Key</label>
+    <input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
+    <label class="field-label" for="modelSelect" style="margin-top: 10px;">模型</label>
+    <select id="modelSelect">
+      <option value="qwen-turbo">qwen-turbo · 快速、成本低</option>
+      <option value="qwen-plus">qwen-plus · 效果均衡</option>
+      <option value="qwen-max">qwen-max · 质量优先</option>
+    </select>
+    <div class="settings-actions">
+      <button class="btn btn-primary btn-small" id="saveKeyBtn" type="button">保存设置</button>
+      <button class="btn btn-secondary btn-small" id="clearKeyBtn" type="button">清除 Key</button>
+      <a href="privacy.html" target="_blank" rel="noreferrer">隐私说明</a>
+    </div>
+    <p class="tip">API Key 保存在本机浏览器中。开始处理时，输入文本会发送到你选择的 DashScope 模型服务；插件不会上传其他浏览记录。</p>
+  </section>
+
+  <nav class="tabs" id="tabs" role="tablist" aria-label="AI 功能">
+    <button class="tab active" type="button" role="tab" data-action="summary" aria-selected="true" tabindex="0" title="长文摘要">摘要</button>
+    <button class="tab" type="button" role="tab" data-action="translate" aria-selected="false" tabindex="-1" title="文本翻译">翻译</button>
+    <button class="tab" type="button" role="tab" data-action="polish" aria-selected="false" tabindex="-1" title="文本润色">润色</button>
+    <button class="tab" type="button" role="tab" data-action="proofread" aria-selected="false" tabindex="-1" title="文本校对">校对</button>
+    <button class="tab" type="button" role="tab" data-action="reply" aria-selected="false" tabindex="-1" title="生成回复">回复</button>
+    <button class="tab" type="button" role="tab" data-action="json" aria-selected="false" tabindex="-1" title="JSON 抽取">JSON</button>
+    <button class="tab" type="button" role="tab" data-action="quiz" aria-selected="false" tabindex="-1" title="生成学习测验">测验</button>
+    <button class="tab" type="button" role="tab" data-action="faq" aria-selected="false" tabindex="-1" title="生成常见问题">FAQ</button>
+    <button class="tab" type="button" role="tab" data-action="code" aria-selected="false" tabindex="-1" title="代码解释">代码</button>
+    <button class="tab" type="button" role="tab" data-action="debug" aria-selected="false" tabindex="-1" title="代码报错解读">报错</button>
+  </nav>
+
+  <p class="tool-description" id="toolDescription" aria-live="polite"></p>
+
+  <div class="target-row" id="targetRow" hidden>
+    <label for="targetLanguage">翻译目标语言</label>
+    <select id="targetLanguage">
+      <option value="中文">中文</option>
+      <option value="English">English</option>
+      <option value="日本語">日本語</option>
+      <option value="한국어">한국어</option>
+      <option value="Français">Français</option>
+      <option value="Deutsch">Deutsch</option>
+      <option value="Español">Español</option>
+    </select>
+  </div>
+
+  <div class="target-row" id="polishStyleRow" hidden>
+    <label for="polishStyle">润色风格</label>
+    <select id="polishStyle">
+      <option value="正式专业">正式专业</option>
+      <option value="活泼口语">活泼口语</option>
+      <option value="简洁干练">简洁干练</option>
+      <option value="营销文案">营销文案</option>
+      <option value="学术严谨">学术严谨</option>
+    </select>
+  </div>
+
+  <div class="target-row" id="replyToneRow" hidden>
+    <label for="replyTone">回复语气</label>
+    <select id="replyTone">
+      <option value="礼貌正式">礼貌正式</option>
+      <option value="友好亲切">友好亲切</option>
+      <option value="简洁直接">简洁直接</option>
+      <option value="委婉拒绝">委婉拒绝</option>
+    </select>
+  </div>
+
+  <section class="card" aria-labelledby="inputTitle">
+    <div class="card-head">
+      <span class="card-title" id="inputTitle">输入文本</span>
+      <span class="counter" id="charCount">0 / 50,000</span>
+    </div>
+    <textarea id="inputArea" placeholder="粘贴要总结的长文..." spellcheck="false"></textarea>
+    <div class="inline-actions">
+      <button class="text-btn" id="fetchPageBtn" type="button">读取当前网页</button>
+      <button class="text-btn danger" id="clearInputBtn" type="button">清空内容</button>
+      <span class="source-label" id="sourceLabel"></span>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="outputTitle">
+    <div class="card-head">
+      <span class="card-title" id="outputTitle">处理结果</span>
+      <span class="meta" id="resultMeta"></span>
+    </div>
+    <pre class="output empty" id="outputArea">结果会显示在这里</pre>
+  </section>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div class="actions">
+    <button class="btn btn-secondary" id="copyBtn" type="button" disabled>复制结果</button>
+    <button class="btn btn-danger" id="cancelBtn" type="button" hidden>停止处理</button>
+    <button class="btn btn-primary" id="runBtn" type="button">开始处理</button>
+  </div>
+
+  <p class="footer-hint">快捷键：Ctrl + Enter 开始处理</p>
+  <script src="popup.js"></script>
+</body>
+</html>

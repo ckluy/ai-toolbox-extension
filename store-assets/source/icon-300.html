@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 工具箱商店图标</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 300px;
+      height: 300px;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      position: relative;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.25), transparent 28%),
+        linear-gradient(145deg, #f472b6 0%, #db2777 42%, #9d174d 72%, #581c87 100%);
+      color: #ffffff;
+      font-family: "Microsoft YaHei UI", "Segoe UI", system-ui, sans-serif;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    body::before {
+      width: 220px;
+      height: 220px;
+      right: -92px;
+      top: -105px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    body::after {
+      width: 160px;
+      height: 160px;
+      left: -82px;
+      bottom: -86px;
+      background: rgba(88, 28, 135, 0.34);
+    }
+
+    .tile {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .top-label {
+      position: absolute;
+      top: 22px;
+      left: 24px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+    .icon-card {
+      display: grid;
+      place-items: center;
+      width: 138px;
+      height: 138px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 34px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow:
+        0 24px 44px rgba(88, 28, 135, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .icon-card img {
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+    }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-shadow: 0 4px 16px rgba(88, 28, 135, 0.22);
+    }
+
+    p {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .spark {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 18px;
+      text-shadow: 0 0 18px rgba(255, 255, 255, 0.7);
+    }
+
+    .spark-a { top: 58px; right: 37px; }
+    .spark-b { bottom: 52px; left: 36px; font-size: 12px; opacity: 0.65; }
+  </style>
+</head>
+<body>
+  <div class="tile">
+    <div class="top-label">EDGE EXTENSION</div>
+    <div class="icon-card">
+      <img src="../../icon128.png" alt="">
+    </div>
+    <h1>AI 工具箱</h1>
+    <p>10 项 AI 工具 · 一个弹窗</p>
+    <span class="spark spark-a">✦</span>
+    <span class="spark spark-b">✧</span>
+  </div>
+</body>
+</html>

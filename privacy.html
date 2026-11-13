@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 工具箱隐私说明</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #dbe3ee;
+      --accent: #2563eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --panel: #172033;
+        --text: #e5edf8;
+        --muted: #94a3b8;
+        --border: #2d3b52;
+        --accent: #60a5fa;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Inter, "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+      line-height: 1.75;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: 0 16px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      margin: 28px 0 8px;
+      font-size: 17px;
+    }
+
+    p,
+    li {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .updated {
+      margin-top: -16px;
+      font-size: 12px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 28px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <img src="icon128.png" alt="">
+      <h1>AI 工具箱隐私说明</h1>
+    </div>
+    <p class="updated">最后更新：2026-11-12</p>
+
+    <p>AI 工具箱是一款自带 API Key 的文本处理扩展。本说明解释扩展会保存哪些信息、何时联网，以及你可以如何删除这些信息。</p>
+
+    <h2>1. 本地保存的信息</h2>
+    <ul>
+      <li><strong>DashScope API Key：</strong>保存在浏览器的 <code>chrome.storage.local</code> 中，用于调用你选择的模型服务。开发者不会收到该 Key。</li>
+      <li><strong>偏好设置：</strong>模型名称、翻译目标语言保存在本地。</li>
+      <li><strong>最近一次处理结果：</strong>仅保存在 <code>chrome.storage.session</code> 会话存储中，浏览器完全退出后会清除。</li>
+    </ul>
+
+    <h2>2. 何时联网</h2>
+    <p>只有在你主动点击“开始处理”或通过右键菜单处理选中文本时，扩展才会把以下内容通过 HTTPS 发送到阿里云 DashScope：</p>
+    <ul>
+      <li>你输入的或选中的待处理文本；</li>
+      <li>处理类型对应的提示词；</li>
+      <li>你选择的模型名称和翻译目标语言。</li>
+    </ul>
+    <p>模型服务的请求处理和数据处理规则受阿里云 DashScope 的隐私政策与服务条款约束。</p>
+
+    <h2>3. 网页读取</h2>
+    <p>“读取当前网页”功能只在你主动点击按钮时执行；右键菜单只读取你主动选中的文字。扩展不会在后台持续记录浏览历史，也不会自动上传网页内容。</p>
+
+    <h2>4. 扩展不会收集的信息</h2>
+    <ul>
+      <li>不会收集浏览历史、搜索记录或账号密码；</li>
+      <li>不会建立开发者服务器，不包含统计、广告或用户画像 SDK；</li>
+      <li>不会向第三方出售或共享数据。</li>
+    </ul>
+
+    <h2>5. 数据删除</h2>
+    <p>你可以在扩展设置中清除 API Key，或在 Edge 的扩展管理页面移除扩展。移除扩展会删除扩展保存的本地数据，但不会影响你在 DashScope 平台上的账户与账单记录。</p>
+
+    <h2>6. 权限用途</h2>
+    <ul>
+      <li><strong>storage：</strong>保存 API Key、模型偏好和会话结果。</li>
+      <li><strong>contextMenus：</strong>提供划词右键菜单。</li>
+      <li><strong>activeTab：</strong>在你主动操作扩展时读取当前标签页。</li>
+      <li><strong>scripting：</strong>提取当前网页正文，不注入远程代码。</li>
+    </ul>
+
+    <h2>7. 安全提示</h2>
+    <p>请使用自己的 API Key，不要在共享电脑上保存敏感 Key。若 Key 可能泄露，请立即到 DashScope 控制台撤销并重新生成。</p>
+
+    <h2>8. 联系方式</h2>
+    <p>如对隐私处理有疑问，请通过 Edge 加载项商店页面提供的开发者联系方式咨询。</p>
+
+    <a class="back" href="popup.html">返回 AI 工具箱</a>
+  </main>
+</body>
+</html>
